@@ -1,0 +1,33 @@
+--task2  (lesson7)
+-- oracle: https://leetcode.com/problems/duplicate-emails/
+
+select distinct email 
+from (select email, count (*) over (partition by email) as c from person)
+where c>1
+
+--task3  (lesson7)
+-- oracle: https://leetcode.com/problems/employees-earning-more-than-their-managers/
+
+select Name as Employee 
+from Employee e 
+where e.ManagerId in (select ID from Employee) 
+and e.Salary > 
+(
+    select  ee.Salary from Employee ee where e.ManagerId=ee.Id
+);
+
+
+--task4  (lesson7)
+-- oracle: https://leetcode.com/problems/rank-scores/
+
+select score,
+dense_rank() over (order by score desc) as Rank
+from scores 
+
+--task5  (lesson7)
+-- oracle: https://leetcode.com/problems/combine-two-tables/
+
+select FirstName, LastName, City, State
+from person p
+left join address a
+on p.personid = a.personid
